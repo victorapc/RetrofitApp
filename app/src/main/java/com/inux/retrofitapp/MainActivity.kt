@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.inux.retrofitapp.repository.Repository
 import com.inux.retrofitapp.viewmodel.MainViewModel
 import com.inux.retrofitapp.viewmodel.MainViewModelFactory
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -22,10 +23,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.getPost()
 
         viewModel.myResponse.observe(this, Observer { response ->
-            Log.d("Response", response.userId.toString())
-            Log.d("Response", response.id.toString())
-            Log.d("Response", response.title)
-            Log.d("Response", response.completed.toString())
+            if(response.isSuccessful){
+                Log.d("Response", response.body()?.userId.toString())
+                Log.d("Response", response.body()?.id.toString())
+                textView.text = response.body()?.title!!
+                Log.d("Response", response.body()?.completed.toString())
+            }else{
+                Log.d("Error", response.errorBody().toString())
+            }
         })
     }
 }
