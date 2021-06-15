@@ -12,9 +12,10 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     val myResponse: MutableLiveData<Response<Post>> = MutableLiveData()
     val myListResponse: MutableLiveData<Response<List<Post>>> = MutableLiveData()
 
-    fun getPost(){
+    // GET -----------------------------------------------------------------------------------------
+    fun getPost(auth: String){
         viewModelScope.launch {
-            val response = repository.getPost()
+            val response = repository.getPost(auth)
             myResponse.value = response
         }
     }
@@ -23,6 +24,20 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             val response = repository.getPost(number)
             myResponse.value = response
+        }
+    }
+
+    fun getListPost(){
+        viewModelScope.launch {
+            val response = repository.getListPost()
+            myListResponse.value = response
+        }
+    }
+
+    fun getListPost(userId: Int){
+        viewModelScope.launch {
+            val response = repository.getListPost(userId)
+            myListResponse.value = response
         }
     }
 
@@ -37,6 +52,21 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             val response = repository.getListPost(userId, options)
             myListResponse.value = response
+        }
+    }
+
+    // POST ----------------------------------------------------------------------------------------
+    fun pushPost(post: Post){
+        viewModelScope.launch {
+            val response = repository.pushPost(post)
+            myResponse.value = response
+        }
+    }
+
+    fun pushPost(userId: Int, id: Int, title: String, body: String){
+        viewModelScope.launch {
+            val response = repository.pushPost(userId, id, title, body)
+            myResponse.value = response
         }
     }
 }
